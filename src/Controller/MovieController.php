@@ -19,6 +19,9 @@ class MovieController extends AbstractController
     }
 
     #[Route('/movies/detail', name: 'app_movie_detail')]
+    /**
+     * @Route
+     */
     public function detail(): Response
     {
         $movie = [
@@ -32,3 +35,16 @@ class MovieController extends AbstractController
     }
 }
 
+
+// make:entity Movie
+//  title (string)
+//  plot (text)
+//  releaseDate (date)
+// make:entity Genre
+//  name (string)
+//  movies (relation)
+
+// make:migration & Go check what's inside the generated migration
+// Execute the migration doctrine:migration:migrate
+
+// doctrine:query:sql "select * from movie" (empty, but no errors)

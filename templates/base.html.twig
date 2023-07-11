@@ -5,16 +5,37 @@
         <title>{% block title 'MyApplication' %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
         {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
     <body>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ path('app_homepage') }}">Homepage</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ path('app_movie_list') }}">Movies</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
         {% block body %}{% endblock %}
+        </div>
     </body>
 </html>
 
-{# / "MyApplication" #}
-{# /hello/adrien "Greetings - MyApplication" #}
-{# /movies "Movies - MyApplication" #}
+{# Install bootstrap throught NPM/Yarn #}
+{# Install and activate the sass-loader #}
+{# Import the bootstrap stylesheet in the entrypoint #}
+{# Add the navbar to the layout #}
+{# Navbar menu : Homepage, Movies list #}
