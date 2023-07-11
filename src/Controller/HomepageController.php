@@ -14,7 +14,6 @@ class HomepageController extends AbstractController
     public function index(Request $request, string $name): Response
     {
 //        $name = $request->attributes->get('name', 'World');
-
         return $this->render('homepage/index.html.twig', [
             'controller_name' => $name,
         ]);

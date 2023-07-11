@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Movies - ' ~ parent() %}
+
+{% block body %}
+    <ul>
+    {% for movie in movies %}
+        {% for i in 'A'..'C' %}
+            {{ dump(i) }}
+        {% endfor %}
+        <li>#{{ loop.index }} {{ movie }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

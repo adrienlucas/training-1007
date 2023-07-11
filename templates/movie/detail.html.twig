@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Movie detail - ' ~ parent() %}
+
+{% block body %}
+    <h1>{{ movie.title }}</h1>
+    <p>{{ movie.plot }}</p>
+    <p>Released on {{ movie.releaseDate|date('Y-m-d') }}</p>
+{% endblock %}

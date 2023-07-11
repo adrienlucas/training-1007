@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomepageController!{% endblock %}
+{% block title (app.current_route == 'app_hello' ? 'Greetings - ') ~ parent() %}
 
 {% block body %}
 <style>
