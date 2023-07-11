@@ -2,49 +2,59 @@
 
 namespace App\Controller;
 
+use App\Entity\Movie;
+use App\Form\MovieType;
+use App\Repository\MovieRepository;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MovieController extends AbstractController
 {
     #[Route('/movies', name: 'app_movie_list')]
-    public function list(): Response
+    public function list(MovieRepository $movieRepository): Response
     {
-        $movies = ['The Matrix', 'Indiana Jones'];
+        $movies = $movieRepository->findAll();
 
         return $this->render('movie/list.html.twig', [
             'movies' => $movies,
         ]);
     }
 
-    #[Route('/movies/detail', name: 'app_movie_detail')]
-    /**
-     * @Route
-     */
-    public function detail(): Response
+    #[Route('/movies/detail/{id}', name: 'app_movie_detail')]
+    public function detail(Movie $movie): Response
     {
-        $movie = [
-            'title' => 'Some movie',
-            'plot' => 'A movie about a movie',
-            'releaseDate' => new \DateTime('2020-01-01'),
-        ];
         return $this->render('movie/detail.html.twig', [
             'movie' => $movie,
         ]);
     }
+
+    #[Route('/movies/create', name: 'app_movie_create')]
+    public function create(Request $request, MovieRepository $movieRepository)
+    {
+        $form = $this->createForm(MovieType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $movie = $form->getData();
+
+            $movieRepository->save($movie, true);
+
+            $this->addFlash('success', 'Your movie has been created successfully.');
+
+            return $this->redirectToRoute('app_movie_detail', [
+                'id' => $movie->getId()
+            ]);
+        }
+
+        return $this->render('movie/create.html.twig', [
+            'createMovieForm' => $form,
+        ]);
+    }
 }
 
-
-// make:entity Movie
-//  title (string)
-//  plot (text)
-//  releaseDate (date)
-// make:entity Genre
-//  name (string)
-//  movies (relation)
-
-// make:migration & Go check what's inside the generated migration
-// Execute the migration doctrine:migration:migrate
-
-// doctrine:query:sql "select * from movie" (empty, but no errors)
+// {{ form(theNameOfTheFormVariable) }}
+// {{ form_start(theNameOfTheFormVariable) }}
+//

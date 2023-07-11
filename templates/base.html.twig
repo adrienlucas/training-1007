@@ -29,7 +29,14 @@
             </div>
         </nav>
         <div class="container">
-        {% block body %}{% endblock %}
+            {% for messageType,messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ messageType }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% block body %}{% endblock %}
         </div>
     </body>
 </html>

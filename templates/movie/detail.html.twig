@@ -5,5 +5,5 @@
 {% block body %}
     <h1>{{ movie.title }}</h1>
     <p>{{ movie.plot }}</p>
-    <p>Released on {{ movie.releaseDate|date('Y-m-d') }}</p>
+    <p>Released on {{ movie.releasedAt|date('Y-m-d') }}</p>
 {% endblock %}

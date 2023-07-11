@@ -5,10 +5,7 @@
 {% block body %}
     <ul>
     {% for movie in movies %}
-        {% for i in 'A'..'C' %}
-            {{ dump(i) }}
-        {% endfor %}
-        <li>#{{ loop.index }} {{ movie }}</li>
+        <li><a href="{{ path('app_movie_detail', {id: movie.id}) }}">{{ movie.title }}</a></li>
     {% endfor %}
     </ul>
 {% endblock %}

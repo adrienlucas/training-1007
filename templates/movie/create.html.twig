@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Movie creation - ' ~ parent() %}
+
+{% block body %}
+    {{ form_start(createMovieForm, {attr: {novalidate: "novalidate"}}) }}
+        {{ form_widget(createMovieForm) }}
+        <button type="submit" class="btn btn-primary">Create</button>
+    {{ form_end(createMovieForm) }}
+{% endblock %}
