@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MovieRepository;
+use App\Validator\ForbiddenWords;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -21,10 +22,12 @@ class Movie
     #[ORM\Column(length: 255)]
     #[Assert\Length(min:3)]
     #[Assert\NotBlank]
+    #[ForbiddenWords(['java', 'javascript', 'c#'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Assert\Length(max: 1024)]
+    #[ForbiddenWords(['java', 'javascript', 'c#'])]
     private ?string $plot = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
@@ -104,19 +107,5 @@ class Movie
         }
 
         return $this;
-    }
-
-    #[Assert\Callback]
-    public function preventForbiddenWords(ExecutionContextInterface $context): void
-    {
-        $forbiddenWords = ['java', 'javascript', 'c#'];
-
-        foreach($forbiddenWords as $word) {
-            if(str_contains($this->plot, $word)) {
-                $context->buildViolation(sprintf('The plot contain a forbidden word (%s).', $word))
-                    ->atPath('plot')
-                    ->addViolation();
-            }
-        }
     }
 }

@@ -6,9 +6,16 @@ use App\Entity\Genre;
 use App\Entity\Movie;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AppFixtures extends Fixture
 {
+    public function __construct(
+        private ValidatorInterface $validator,
+    ) {
+    }
+
     public function load(ObjectManager $manager): void
     {
         $actionGenre = new Genre();
@@ -39,7 +46,6 @@ class AppFixtures extends Fixture
 
         $actionGenre->addMovie($movie2);
 
-
         $movie3 = new Movie();
         $manager->persist($movie3);
         $movie3->setTitle('Deadpool');
@@ -64,6 +70,10 @@ class AppFixtures extends Fixture
         $movie5->setReleasedAt(new \DateTime('1994-10-14'));
 
         $dramaGenre->addMovie($movie5);
+
+        $invalidMovie = new Movie();
+        $invalidMovie->setTitle('a');
+        $invalidMovie->setPlot('Something java something');
 
         $manager->flush();
     }

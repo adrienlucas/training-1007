@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Movie;
 use App\Form\MovieType;
+use App\Gateway\OmdbGateway;
 use App\Repository\MovieRepository;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,10 +25,13 @@ class MovieController extends AbstractController
     }
 
     #[Route('/movies/detail/{id}', name: 'app_movie_detail')]
-    public function detail(Movie $movie): Response
+    public function detail(Movie $movie, OmdbGateway $omdbGateway): Response
     {
+        $moviePoster = $omdbGateway->getPoster($movie);
+
         return $this->render('movie/detail.html.twig', [
             'movie' => $movie,
+            'moviePoster' => $moviePoster,
         ]);
     }
 
@@ -55,6 +59,3 @@ class MovieController extends AbstractController
     }
 }
 
-// {{ form(theNameOfTheFormVariable) }}
-// {{ form_start(theNameOfTheFormVariable) }}
-//
