@@ -3,7 +3,7 @@
 {% block title 'Movies - ' ~ parent() %}
 
 {% block body %}
-    <ul>
+    <ul class="movies">
     {% for movie in movies %}
         <li><a href="{{ path('app_movie_detail', {id: movie.id}) }}">{{ movie.title }}</a></li>
     {% endfor %}
