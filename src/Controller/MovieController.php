@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class MovieController extends AbstractController
 {
@@ -37,7 +38,7 @@ class MovieController extends AbstractController
         ]);
     }
 
-    #[Route('/movies/preview/{title}', name: 'app_movie_detail')]
+    #[Route('/movies/preview/{title}', name: 'app_movie_preview')]
     public function preview(
         string $title,
         OmdbGateway $omdbGateway): Response
@@ -56,13 +57,18 @@ class MovieController extends AbstractController
     }
 
     #[Route('/movies/create', name: 'app_movie_create')]
+    #[IsGranted('ROLE_USER')]
     public function create(Request $request, MovieRepository $movieRepository)
     {
         $form = $this->createForm(MovieType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Movie $movie */
             $movie = $form->getData();
+
+            $currentUser = $this->getUser();
+            $movie->setCreatedBy($currentUser);
 
             $movieRepository->save($movie, true);
 
@@ -87,6 +93,7 @@ class MovieController extends AbstractController
     // (add createdBy using make:entity Movie)
 // Update the schema
     // symfony console list doctrine
+// Update the fixtures
 // In the MovieController::create, before persisting the movie, associate it with the current user
     // hint to get the current user : look at the AbstractController shortcuts
 
