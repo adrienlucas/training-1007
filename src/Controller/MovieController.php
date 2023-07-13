@@ -10,6 +10,7 @@ use App\Repository\MovieRepository;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -94,6 +95,12 @@ class MovieController extends AbstractController
         $this->addFlash('success', sprintf('Movie "%s" was removed.', $movie->getTitle()));
 
         return $this->redirectToRoute('app_movie_list');
+    }
+
+    #[Route('/json-demo')]
+    public function jsonDemo(): JsonResponse
+    {
+        return new JsonResponse(['message' => 'Hello world!']);
     }
 }
 

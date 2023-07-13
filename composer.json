@@ -80,7 +80,7 @@
             "@auto-scripts"
         ],
         "reset-db": [
-            "rm var/data.db",
+            "rm -rf var/data.db",
             "@php bin/console doctrine:database:create",
             "@php bin/console doctrine:schema:update --force",
             "@php bin/console doctrine:fixtures:load --no-interaction"
