@@ -9,6 +9,7 @@ use App\Gateway\RemoteMovieResolver;
 use App\Repository\MovieRepository;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -85,6 +86,7 @@ class MovieController extends AbstractController
     }
 
     #[Route('/movies/delete/{id}', name:'app_movie_delete')]
+    #[IsGranted('delete', 'movie')]
     public function delete(Movie $movie, MovieRepository $movieRepository): Response
     {
         $movieRepository->remove($movie, true);
