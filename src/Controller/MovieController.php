@@ -83,17 +83,15 @@ class MovieController extends AbstractController
             'createMovieForm' => $form,
         ]);
     }
+
+    #[Route('/movies/delete/{id}', name:'app_movie_delete')]
+    public function delete(Movie $movie, MovieRepository $movieRepository): Response
+    {
+        $movieRepository->remove($movie, true);
+
+        $this->addFlash('success', sprintf('Movie "%s" was removed.', $movie->getTitle()));
+
+        return $this->redirectToRoute('app_movie_list');
+    }
 }
-
-
-// Protect the MovieController::create action against unauthenticated users
-    // (unauthenticated means you don't have the ROLE_USER)
-    // #[IsGranted('...')]
-// Create a relation between the User and the Movie
-    // (add createdBy using make:entity Movie)
-// Update the schema
-    // symfony console list doctrine
-// Update the fixtures
-// In the MovieController::create, before persisting the movie, associate it with the current user
-    // hint to get the current user : look at the AbstractController shortcuts
 

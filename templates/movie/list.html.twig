@@ -5,7 +5,10 @@
 {% block body %}
     <ul class="movies">
     {% for movie in movies %}
-        <li><a href="{{ path('app_movie_detail', {id: movie.id}) }}">{{ movie.title }}</a></li>
+        <li>
+            <a href="{{ path('app_movie_detail', {id: movie.id}) }}">{{ movie.title }}</a>
+            &nbsp;(<a href="{{ path('app_movie_delete', {id: movie.id}) }}">delete</a>)
+        </li>
     {% endfor %}
     </ul>
 {% endblock %}
