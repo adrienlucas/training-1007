@@ -16,8 +16,8 @@ class RemoteMovieResolver implements ValueResolverInterface
 
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-        $title = $request->attributes->get('title');
-        $movie = $this->omdbGateway->getMovie($title);
+//        $title = $request->attributes->get('title');
+//        $movie = $this->omdbGateway->getMovie($title);
 
         return [];
     }
