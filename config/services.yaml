@@ -27,4 +27,4 @@ services:
 
     App\Gateway\OmdbGateway:
         arguments:
-            $apiKey: "%env(OMDB_API_KEY)%"
+            $apiKey: "%env(resolve:OMDB_API_KEY)%"

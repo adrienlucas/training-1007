@@ -19,3 +19,14 @@ class HomepageController extends AbstractController
         ]);
     }
 }
+
+// make:command
+// Edit the generated command to add a required argument which is the title of the movie
+//    expected usage : symfony console app:import-movie "The Matrix"
+// Inject the OmdbGateway in the command
+// Implement a `getMovie(string $title): array` method on the OmdbGateway
+//      alternative: `getMovie(string $title): Movie`
+//     (beware of the dolls)
+// Use this method inside the command
+// Create a new Movie with the retrieved data
+// Inject and use the MovieRepository to persist the newly created movie

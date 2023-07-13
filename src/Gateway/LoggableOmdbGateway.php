@@ -4,26 +4,24 @@ declare(strict_types=1);
 namespace App\Gateway;
 
 use App\Entity\Movie;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
-use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-#[AsDecorator(OmdbGateway::class)]
-class CacheableOmdbGateway extends OmdbGateway
+#[AsDecorator(OmdbGateway::class, priority: 1)]
+class LoggableOmdbGateway extends OmdbGateway
 {
     public function __construct(
         private OmdbGateway $omdbGateway,
-        private CacheInterface $cache,
-    ) {
+        private LoggerInterface $logger,
+    )
+    {
     }
 
     public function getPoster(Movie $movie): string
     {
-        $cacheKey = 'movie_poster_'.$movie->getId();
-
-        return $this->cache->get(
-            $cacheKey,
-            fn() => $this->omdbGateway->getPoster($movie)
-        );
+        $this->logger->notice('OmdbGateway::getPoster was called.');
+        return $this->omdbGateway->getPoster($movie);
     }
 
     public function getMovie(string $title): ?Movie

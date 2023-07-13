@@ -75,6 +75,8 @@ class AppFixtures extends Fixture
         $invalidMovie->setTitle('a');
         $invalidMovie->setPlot('Something java something');
 
+        $this->validator->validate($invalidMovie);
+
         $manager->flush();
     }
 }
