@@ -79,3 +79,14 @@ class MovieController extends AbstractController
     }
 }
 
+
+// Protect the MovieController::create action against unauthenticated users
+    // (unauthenticated means you don't have the ROLE_USER)
+    // #[IsGranted('...')]
+// Create a relation between the User and the Movie
+    // (add createdBy using make:entity Movie)
+// Update the schema
+    // symfony console list doctrine
+// In the MovieController::create, before persisting the movie, associate it with the current user
+    // hint to get the current user : look at the AbstractController shortcuts
+

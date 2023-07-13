@@ -5,11 +5,12 @@ namespace App\DataFixtures;
 use App\Entity\Genre;
 use App\Entity\Movie;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class AppFixtures extends Fixture
+class AppFixtures extends Fixture implements DependentFixtureInterface
 {
     public function __construct(
         private ValidatorInterface $validator,
@@ -18,6 +19,8 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        $defaultUser = $this->getReference('default user');
+
         $actionGenre = new Genre();
         $manager->persist($actionGenre);
         $actionGenre->setName('Action');
@@ -31,6 +34,7 @@ class AppFixtures extends Fixture
         $dramaGenre->setName('Drama');
 
         $movie1 = new Movie();
+        $movie1->setCreatedBy($defaultUser);
         $manager->persist($movie1);
         $movie1->setTitle('Avengers: Endgame');
         $movie1->setPlot('After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos\' actions and restore balance to the universe.');
@@ -39,6 +43,7 @@ class AppFixtures extends Fixture
         $actionGenre->addMovie($movie1);
 
         $movie2 = new Movie();
+        $movie2->setCreatedBy($defaultUser);
         $manager->persist($movie2);
         $movie2->setTitle('Jumanji: Welcome to the Jungle');
         $movie2->setPlot('Four teenagers are sucked into a magical video game, and the only way they can escape is to work together to finish the game.');
@@ -47,6 +52,7 @@ class AppFixtures extends Fixture
         $actionGenre->addMovie($movie2);
 
         $movie3 = new Movie();
+        $movie3->setCreatedBy($defaultUser);
         $manager->persist($movie3);
         $movie3->setTitle('Deadpool');
         $movie3->setPlot('A fast-talking mercenary with a morbid sense of humor is subjected to a rogue experiment that leaves him with accelerated healing powers and a quest for revenge.');
@@ -55,6 +61,7 @@ class AppFixtures extends Fixture
         $comedyGenre->addMovie($movie3);
 
         $movie4 = new Movie();
+        $movie4->setCreatedBy($defaultUser);
         $manager->persist($movie4);
         $movie4->setTitle('Superbad');
         $movie4->setPlot('Two co-dependent high school seniors are forced to deal with separation anxiety after their plan to stage a booze-soaked party goes awry.');
@@ -64,6 +71,7 @@ class AppFixtures extends Fixture
         $dramaGenre->addMovie($movie4);
 
         $movie5 = new Movie();
+        $movie5->setCreatedBy($defaultUser);
         $manager->persist($movie5);
         $movie5->setTitle('The Shawshank Redemption');
         $movie5->setPlot('Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.');
@@ -72,11 +80,17 @@ class AppFixtures extends Fixture
         $dramaGenre->addMovie($movie5);
 
         $invalidMovie = new Movie();
+        $invalidMovie->setCreatedBy($defaultUser);
         $invalidMovie->setTitle('a');
         $invalidMovie->setPlot('Something java something');
 
         $this->validator->validate($invalidMovie);
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [UserFixtures::class];
     }
 }
